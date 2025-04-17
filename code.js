@@ -1,14 +1,11 @@
-// Показываем UI
 figma.showUI(__html__, { width: 600, height: 400 });
 
-// Функция экспорта в base64 с правильным scale
 async function getImageBase64(node) {
-  const bytes = await node.exportAsync({ format: "PNG", scale: 2 }); // ⬅️ scale должен быть здесь
+  const bytes = await node.exportAsync({ format: "PNG", scale: 2 });
   const base64 = figma.base64Encode(bytes);
   return base64;
 }
 
-// Обработка запроса от UI
 figma.ui.onmessage = async (msg) => {
   if (msg.type === 'analyze') {
     const selection = figma.currentPage.selection;
@@ -18,7 +15,7 @@ figma.ui.onmessage = async (msg) => {
     }
 
     const node = selection[0];
-    if (node.type !== "FRAME" && node.type !== "GROUP" && node.type !== "COMPONENT" && node.type !== "INSTANCE") {
+    if (!["FRAME", "GROUP", "COMPONENT", "INSTANCE"].includes(node.type)) {
       figma.ui.postMessage("❌ Selected element is not exportable.");
       return;
     }
@@ -30,9 +27,7 @@ figma.ui.onmessage = async (msg) => {
 
       const response = await fetch("https://tabby-copy-polisher-server-tj3m.vercel.app/api/analyze", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           image: imageBase64,
           token: "tabby_secret"
