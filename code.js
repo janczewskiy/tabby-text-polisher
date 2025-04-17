@@ -1,7 +1,7 @@
 figma.showUI(__html__, { width: 600, height: 400 });
 
 async function getImageBase64(node) {
-  const bytes = await node.exportAsync({ format: "PNG", scale: 2 }); // <--- вот здесь фикс
+  const bytes = await node.exportAsync({ format: "PNG", scale: 2 }); // <--- FIX: scale напрямую
   const base64 = figma.base64Encode(bytes);
   return base64;
 }
