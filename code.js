@@ -1,7 +1,7 @@
 figma.showUI(__html__, { width: 600, height: 400 });
 
 async function getImageBase64(node) {
-  const bytes = await node.exportAsync({ format: "PNG", scale: 2 });
+  const bytes = await node.exportAsync({ format: "PNG", scale: 2 }); // <--- вот здесь фикс
   const base64 = figma.base64Encode(bytes);
   return base64;
 }
@@ -15,29 +15,17 @@ figma.ui.onmessage = async (msg) => {
     }
 
     const node = selection[0];
-    if (!["FRAME", "GROUP", "COMPONENT", "INSTANCE"].includes(node.type)) {
-      figma.ui.postMessage("❌ Selected element is not exportable.");
-      return;
-    }
+    const imageBase64 = await getImageBase64(node);
 
-    try {
-      const imageBase64 = await getImageBase64(node);
+    const response = await fetch("https://tabby-copy-polisher-server-tj3m.vercel.app/api/analyze", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ image: imageBase64, token: "tabby_secret" })
+    });
 
-      figma.ui.postMessage("📤 Sending request to backend...");
-
-      const response = await fetch("https://tabby-copy-polisher-server-tj3m.vercel.app/api/analyze", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          image: imageBase64,
-          token: "tabby_secret"
-        })
-      });
-
-      const result = await response.text();
-      figma.ui.postMessage(result);
-    } catch (error) {
-      figma.ui.postMessage(`❌ Error: ${error.message}`);
-    }
+    const result = await response.text();
+    figma.ui.postMessage(result);
   }
 };
