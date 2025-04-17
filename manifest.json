@@ -1,8 +1,8 @@
 {
-  "name": "Tabby UX Checker",
-  "id": "tabby-ux-checker",
+  "name": "Tabby Text Polisher",
   "editorType": ["figma"],
+  "id": "tabby-text-polisher",
+  "api": "1.0.0",
   "main": "code.js",
-  "ui": "ui.html",
-  "api": "1.0.0"
+  "ui": "ui.html"
 }
