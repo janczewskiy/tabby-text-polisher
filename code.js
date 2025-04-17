@@ -14,7 +14,7 @@ figma.ui.onmessage = async msg => {
       figma.ui.postMessage({ loading: true });
 
       try {
-        const response = await fetch('<your-vercel-url>/api/polish', {
+        const response = await fetch('https://tabby-copy-polisher-server.vercel.app/api/polish', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ content })
