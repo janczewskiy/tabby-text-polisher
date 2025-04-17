@@ -2,31 +2,27 @@
 <html>
   <head>
     <style>
-      body { font-family: sans-serif; padding: 16px; }
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        margin: 0;
+        padding: 16px;
+      }
       textarea {
         width: 100%;
         height: 300px;
-        font-family: monospace;
         border: 2px solid orange;
+        font-family: monospace;
         padding: 10px;
-        resize: vertical;
       }
     </style>
   </head>
   <body>
-    <h2><b>Tabby UX Checker</b></h2>
+    <h2>Tabby UX Checker</h2>
     <p>Below is the response from the GPT model:</p>
-    <textarea readonly id="output">Loading...</textarea>
+    <textarea id="result" readonly>Loading...</textarea>
     <script>
       window.onmessage = (event) => {
-        const textarea = document.getElementById("output");
-        if (typeof event.data === "string") {
-          textarea.value = event.data;
-        } else if (event.data?.result) {
-          textarea.value = event.data.result;
-        } else {
-          textarea.value = JSON.stringify(event.data, null, 2);
-        }
+        document.getElementById("result").textContent = event.data.pluginMessage;
       };
 
       parent.postMessage({ pluginMessage: { type: 'analyze' } }, '*');

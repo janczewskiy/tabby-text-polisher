@@ -1,8 +1,8 @@
 {
-  "editorType": ["figma", "figjam"],
-  "name": "Tabby UX Checker",
+  "name": "Tabby UX Review",
   "id": "tabby-ux-checker",
   "api": "1.0.0",
-  "main": "code.ts",
-  "ui": "ui.html"
+  "main": "code.js",
+  "ui": "ui.html",
+  "editorType": ["figma"]
 }
