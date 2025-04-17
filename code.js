@@ -23,11 +23,13 @@ figma.ui.onmessage = async (msg) => {
       });
 
       const data = await response.json();
-      const resultText = data?.result || "❌ No result.";
+      console.log("✅ Response from server:", data); // 👈 Журналим ответ
 
+      const resultText = data?.result || "❌ No result.";
       figma.ui.postMessage({ type: "result", result: resultText });
+
     } catch (err) {
-      console.error("Error during export or fetch:", err);
+      console.error("🚨 Error during fetch/export:", err);
       figma.ui.postMessage({ type: "result", result: "❌ Failed to fetch or export." });
     }
   }
