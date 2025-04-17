@@ -1,6 +1,6 @@
 figma.showUI(__html__, { width: 600, height: 400 });
 
-async function getImageBase64(node: SceneNode): Promise<string> {
+async function getImageBase64(node) {
   const bytes = await node.exportAsync({ format: "PNG" });
   return figma.base64Encode(bytes);
 }
@@ -23,7 +23,7 @@ figma.ui.onmessage = async (msg) => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           image: imageBase64,
-          token: "tabby_secret" // 👈 обязательно совпадает с backend
+          token: "tabby_secret"
         })
       });
 
