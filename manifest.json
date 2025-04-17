@@ -1,4 +1,5 @@
 {
+  "editorType": ["figma", "figjam"]
   "name": "Tabby UX Checker",
   "id": "tabby-ux-checker",
   "api": "1.0.0",
