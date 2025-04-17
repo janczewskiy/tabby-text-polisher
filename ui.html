@@ -1,26 +1,31 @@
+
 <!DOCTYPE html>
 <html>
-  <head>
-    <style>
-      body { font-family: sans-serif; padding: 20px; }
-      textarea {
-        width: 100%;
-        height: 300px;
-        resize: vertical;
-        font-family: monospace;
-        border: 2px solid orange;
-      }
-    </style>
-  </head>
-  <body>
-    <h2>Tabby UX Checker</h2>
-    <p>Below is the response from the GPT model:</p>
-    <textarea id="result">Loading...</textarea>
-    <script>
+<head>
+  <meta charset="UTF-8" />
+  <style>
+    body { font-family: sans-serif; padding: 16px; }
+    textarea {
+      width: 100%;
+      height: 300px;
+      border: 2px solid orange;
+      padding: 10px;
+      font-family: monospace;
+    }
+  </style>
+</head>
+<body>
+  <h2>Tabby UX Checker</h2>
+  <p>Below is the response from the GPT model:</p>
+  <textarea id="output">Loading...</textarea>
+  <script>
+    window.onload = () => {
       parent.postMessage({ pluginMessage: { type: 'analyze' } }, '*');
-      onmessage = (event) => {
-        document.getElementById("result").value = event.data.pluginMessage;
-      };
-    </script>
-  </body>
+    };
+    onmessage = (event) => {
+      const el = document.getElementById('output');
+      el.value = typeof event.data.pluginMessage === 'string' ? event.data.pluginMessage : JSON.stringify(event.data.pluginMessage, null, 2);
+    };
+  </script>
+</body>
 </html>
