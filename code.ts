@@ -18,7 +18,7 @@ figma.ui.onmessage = async (msg) => {
     const imageBase64 = await getImageBase64(node);
 
     try {
-      const response = await fetch("https://tabby-copy-polisher-server-tj3m.vercel.app/", {
+      const response = await fetch("https://tabby-copy-polisher-server-tj3m.vercel.app/analyze", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
