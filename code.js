@@ -5,13 +5,13 @@ figma.ui.onmessage = async (msg) => {
     const selection = figma.currentPage.selection;
 
     if (selection.length !== 1 || selection[0].type !== "FRAME") {
-      figma.ui.postMessage({ type: "result", result: "❌ Please select a single frame." });
+      figma.ui.postMessage({ type: "result", result: "❌ Please select a single Frame." });
       return;
     }
 
     try {
-      const image = await selection[0].exportAsync({ format: "PNG" });
-      const base64 = figma.base64Encode(image);
+      const imageBytes = await selection[0].exportAsync({ format: "PNG" });
+      const base64 = figma.base64Encode(imageBytes);
 
       const response = await fetch("https://tabby-copy-polisher-server-tj3m.vercel.app/api/analyze", {
         method: "POST",
@@ -22,12 +22,13 @@ figma.ui.onmessage = async (msg) => {
         })
       });
 
-      const result = await response.json();
-      figma.ui.postMessage({ type: "result", result: result?.result || "❌ No result." });
+      const data = await response.json();
+      const resultText = data?.result || "❌ No result.";
 
-    } catch (error) {
-      console.error("Export or fetch failed:", error);
-      figma.ui.postMessage({ type: "result", result: "❌ Error during export or fetch." });
+      figma.ui.postMessage({ type: "result", result: resultText });
+    } catch (err) {
+      console.error("Error during export or fetch:", err);
+      figma.ui.postMessage({ type: "result", result: "❌ Failed to fetch or export." });
     }
   }
 };
